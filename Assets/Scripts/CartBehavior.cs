@@ -56,16 +56,27 @@ public class CartBehavior : MonoBehaviour
         Rigidbody rigidbody = mObjPole.GetComponent<Rigidbody>();
         return rigidbody.angularVelocity.z;
     }
+    public bool IsPoleFallen()
+    {
+        Rigidbody rigidbody = GetComponent<Rigidbody>();
+        if( (GetPoleAngle() >= worstAngleDeg) || rigidbody.position.y <= 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
 
     // GUIを描画する
     private void drawGUI_()
     {
-        GUI.Box(new Rect(10, 10, 140, 120), "Info");
+        GUI.Box(new Rect(10, 10, 140, 150), "Info");
         GUI.Label(new Rect(20, 30, 100, 90), string.Format("CartPosition:{0:F1}", GetCartPosition()));
         GUI.Label(new Rect(20, 50, 100, 90), string.Format("CartVelocity:{0:F1}", GetCartVelocity()));
         GUI.Label(new Rect(20, 70, 100, 90), string.Format("PoleAngle:{0:F1}", GetPoleAngle()));
         GUI.Label(new Rect(20, 90, 100, 90), string.Format("PoleAngularVel:{0:F1}", GetPoleAngularVelocity()));
         GUI.Label(new Rect(20, 110, 100, 90), string.Format("Reward:{0:F1}", CalcAngleReward()));
+        GUI.Label(new Rect(20, 130, 100, 90), string.Format("Fail:{0}", IsPoleFallen().ToString()));
     }
 
     // Start is called before the first frame update
