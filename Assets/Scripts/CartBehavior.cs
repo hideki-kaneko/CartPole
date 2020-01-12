@@ -9,6 +9,7 @@ public class CartBehavior : MonoBehaviour
     public GameObject mObjPole;
     public float randomInitPosXMax = 1;
     public float initPosY = 0;
+    public float worstAngleDeg = 90;
 
     // Private
     private Vector3 initDir;
@@ -22,14 +23,49 @@ public class CartBehavior : MonoBehaviour
         rigidbodyCart.transform.position = initPos;
     }
 
-    // 棒の初期位置からの傾き（度）を取得する
-    private float calcPoleAngle_()
+    // 傾きによる報酬を計算する
+    public float CalcAngleReward()
+    {
+        float angle = GetPoleAngle();
+        float reward = Mathf.Clamp( 1 - angle / worstAngleDeg, 0, 1);
+        return reward;
+    }
+
+    // カートの状態を取得
+    public float GetCartPosition()
+    {
+        Rigidbody rigidbody = GetComponent<Rigidbody>();
+        return rigidbody.position.x;
+    }
+    public float GetCartVelocity()
+    {
+        Rigidbody rigidbody = GetComponent<Rigidbody>();
+        return rigidbody.velocity.x;
+    }
+    
+    // ポールの状態を取得
+    public float GetPoleAngle()
     {
         Rigidbody rigidbodyPole = mObjPole.GetComponent<Rigidbody>();
         Vector3 currentDir = rigidbodyPole.transform.up;
-        float rotDeg = Mathf.Abs(Vector3.Angle(currentDir, initDir));
-
+        float rotDeg = Vector3.Angle(currentDir, initDir);
         return rotDeg;
+    }
+    public float GetPoleAngularVelocity()
+    {
+        Rigidbody rigidbody = mObjPole.GetComponent<Rigidbody>();
+        return rigidbody.angularVelocity.z;
+    }
+
+    // GUIを描画する
+    private void drawGUI_()
+    {
+        GUI.Box(new Rect(10, 10, 140, 120), "Info");
+        GUI.Label(new Rect(20, 30, 100, 90), string.Format("CartPosition:{0:F1}", GetCartPosition()));
+        GUI.Label(new Rect(20, 50, 100, 90), string.Format("CartVelocity:{0:F1}", GetCartVelocity()));
+        GUI.Label(new Rect(20, 70, 100, 90), string.Format("PoleAngle:{0:F1}", GetPoleAngle()));
+        GUI.Label(new Rect(20, 90, 100, 90), string.Format("PoleAngularVel:{0:F1}", GetPoleAngularVelocity()));
+        GUI.Label(new Rect(20, 110, 100, 90), string.Format("Reward:{0:F1}", CalcAngleReward()));
     }
 
     // Start is called before the first frame update
@@ -52,10 +88,6 @@ public class CartBehavior : MonoBehaviour
 
     private void OnGUI()
     {
-        float rotDeg = calcPoleAngle_();
-        string textRot = string.Format("Rotation: {0:F2}", rotDeg);
-
-        GUI.Box(new Rect(10, 10, 120, 90), "Menu");
-        GUI.Label(new Rect(20, 30, 100, 90), textRot);
+        drawGUI_();
     }
 }
