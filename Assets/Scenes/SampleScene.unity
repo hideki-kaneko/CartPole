@@ -249,9 +249,9 @@ MonoBehaviour:
     resetOnDone: 1
     onDemandDecision: 0
     numberOfActionsBetweenDecisions: 1
-  Speed: 10
+  Speed: 30
   mObjPole: {fileID: 835097646}
-  randomInitPosXMax: 0.5
+  randomInitPosXMax: 0.1
   initPosY: 0.5
   worstAngleDeg: 90
 --- !u!59 &42725036
