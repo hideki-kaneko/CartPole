@@ -244,6 +244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 10
+  mObjPole: {fileID: 835097646}
 --- !u!59 &42725036
 HingeJoint:
   m_ObjectHideFlags: 0
