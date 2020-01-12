@@ -133,8 +133,9 @@ GameObject:
   - component: {fileID: 42725031}
   - component: {fileID: 42725030}
   - component: {fileID: 42725034}
-  - component: {fileID: 42725035}
   - component: {fileID: 42725036}
+  - component: {fileID: 42725035}
+  - component: {fileID: 42725037}
   m_Layer: 0
   m_Name: Cart
   m_TagString: Untagged
@@ -240,13 +241,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 42725029}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11f5fbbd46f6dd54aade71138cfc019d, type: 3}
+  m_Script: {fileID: 11500000, guid: 3ebcbe75b61cefa41a2a216a92b86fa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+    resetOnDone: 1
+    onDemandDecision: 0
+    numberOfActionsBetweenDecisions: 1
   Speed: 10
   mObjPole: {fileID: 835097646}
   randomInitPosXMax: 0.5
   initPosY: 0.5
+  worstAngleDeg: 90
 --- !u!59 &42725036
 HingeJoint:
   m_ObjectHideFlags: 0
@@ -282,6 +289,28 @@ HingeJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &42725037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 42725029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1c4e0b1822b495aa52bc52839ecb30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BrainParameters:
+    vectorObservationSize: 4
+    numStackedVectorObservations: 1
+    vectorActionSize: 01000000
+    vectorActionDescriptions: []
+    vectorActionSpaceType: 1
+  m_Model: {fileID: 0}
+  m_InferenceDevice: 0
+  m_BehaviorType: 0
+  m_BehaviorName: CartBrain
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
