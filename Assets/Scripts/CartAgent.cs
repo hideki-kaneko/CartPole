@@ -13,15 +13,26 @@ public class CartAgent : Agent
     public float worstAngleDeg = 90;
 
     // Private
-    private Vector3 initDir;
+    private Vector3 initDir = Vector3.up;
 
+    public void SetDefaultPolePosition()
+    {
+        Rigidbody rigidbody = mObjPole.GetComponent<Rigidbody>();
+        rigidbody.angularVelocity = Vector3.zero;
+        rigidbody.velocity = Vector3.zero;
+        rigidbody.position = Vector3.zero;
+        rigidbody.rotation = Quaternion.identity;
+    }
     // ランダムな初期位置をセットする
     public void SetRandomCartPosition()
     {
         float initX = Random.Range(-randomInitPosXMax, randomInitPosXMax);
         Vector3 initPos = new Vector3(initX, initPosY, 0);
         Rigidbody rigidbodyCart = GetComponent<Rigidbody>();
-        rigidbodyCart.transform.position = initPos;
+        rigidbodyCart.position = initPos;
+        rigidbodyCart.angularVelocity = Vector3.zero;
+        rigidbodyCart.velocity = Vector3.zero;
+        rigidbodyCart.rotation = Quaternion.identity;
     }
 
     // 傾きによる報酬を計算する
@@ -90,9 +101,8 @@ public class CartAgent : Agent
     {
         base.AgentReset();
 
+        SetDefaultPolePosition();
         SetRandomCartPosition();
-        Rigidbody rigidbodyPole = mObjPole.GetComponent<Rigidbody>();
-        initDir = rigidbodyPole.transform.up;
     }
 
     public override void CollectObservations()
@@ -125,5 +135,17 @@ public class CartAgent : Agent
             float reward = CalcAngleReward();
             SetReward(reward);
         }
+    }
+
+    public override float[] Heuristic()
+    {
+        float[] action = new float[1];
+        action[0] = Input.GetAxis("Horizontal");
+        return action;
+    }
+
+    private void OnGUI()
+    {
+        drawGUI_();
     }
 }
